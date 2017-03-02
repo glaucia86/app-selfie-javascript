@@ -2,8 +2,8 @@
   "name": "selfie-app",
   "private": true,
   "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "description": "Projeto com objetivo de testar a API: navigator.getUserMedia do Js",
+  "repository": "https://github.com/glaucia86/app-selfie-javascript",
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.6.1",

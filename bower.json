@@ -1,8 +1,8 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
+  "name": "selfie-app",
+  "description": "Projeto com objetivo de testar a API: navigator.getUserMedia do Js",
   "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "homepage": "https://github.com/glaucia86/app-selfie-javascript",
   "license": "MIT",
   "private": true,
   "dependencies": {
