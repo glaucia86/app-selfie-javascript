@@ -116,8 +116,6 @@ html{
     display: none;
 }
 
-
-
 .app video#camera-stream.visible,
 .app img#snap.visible,
 .app #error-message.visible
@@ -128,7 +126,6 @@ html{
 .app .controls.visible{
     display: flex;
 }
-
 
 
 @media(max-width: 1000px){

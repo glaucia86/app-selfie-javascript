@@ -1,13 +1,15 @@
-// Abaixo segue todas as referências necessárias dos elementos que iremos necessitar:
+"use strict";
 
-var video 				= document.querySelector('#camera-stream'),
-	image 				= document.querySelector('#snap'),
-	start_camera 		= document.querySelector('#start-camera'),
-	controls			= document.querySelector('.controls'),
-	take_photo_btn  	= document.querySelector('#take-photo'),
-	delete_photo_btn 	= document.querySelector('#delete-photo-btn'),
-	download_photo_btn 	= document.querySelector('#download-photo'),
-	error_message 		= document.querySelector('#error-message');
+// Referências a todo o elemento que precisaremos.
+
+var video           	= document.querySelector('#camera-stream'),
+    imagem           	= document.querySelector('#snap'),
+    iniciar_camera    	= document.querySelector('#start-camera'),
+    controles        	= document.querySelector('.controls'),
+    tirar_foto_btn  	= document.querySelector('#take-photo'),
+    excluir_foto_btn 	= document.querySelector('#delete-photo'),
+    download_foto_btn 	= document.querySelector('#download-photo'),
+    messagem_error 		= document.querySelector('#error-message');
 
 // O getUserMedia é usado para manipular a entrada da câmera.
 // Alguns navegadores precisam de prefixo para que possamos cobrir todas as opções:
@@ -20,6 +22,7 @@ navigator.getMedia = ( navigator.getUserMedia ||
 if(!navigator.getMedia) {
 	displayErrorMessage("Seu browser não tem suporte para o navigator.getUserMedia");
 } else {
+
 	// Solicita a câmera:
 	navigator.getMedia(
 		{
@@ -36,49 +39,50 @@ if(!navigator.getMedia) {
 			// E depois irá dar um play no elemento video para mostrar o stream de video para o usuário:
 			video.play();
 			video.onplay = function() {
-				showVideo();
+				mostrarVideo();
 			};
 		},
 
 		// Callback - Error:
 		function(err) {
-			displayErrorMessage("Ococrreu um erro ao acessar o stream de vídeo " + err.name, err);
+			displayErrorMessage("Ocorreu um erro ao acessar o stream de vídeo " + err.name, err);
 		}
 	);
 }
 
-// Navegadores de celulares não podem reproduzir video sem entrada do usuário.
+// Browsers de celulares não podem reproduzir video sem entrada do usuário.
 // Com isso, iremos utilizar um botão para iniciar a app manualmente:
-start_camera.addEventListener("click", function(e) {
+
+iniciar_camera.addEventListener("click", function(e) {
 
 	e.preventDefault();
 
 	// Iniciar o video manualmente:
 	video.play();
-	showVideo();
+	mostrarVideo();
 });
 
-take_photo_btn.addEventListener("click", function(e) {
+tirar_foto_btn.addEventListener("click", function(e) {
 
 	e.preventDefault();
 
-	var snap = takeSnapshot();
+	var snap = tirarFoto();
 
 	// Mostrar imagem:
 	image.setAttribute('src', snap);
 	image.classList.add("visible");
 
 	// Ativar os botões: excluir e salvar:
-	delete_photo_btn.classList.remove("disabled");
-	download_photo_btn.classList.remove("disabled");
+	excluir_foto_btn.classList.remove("disabled");
+	download_foto_btn.classList.remove("disabled");
 
 	//Definir o atributo href do botão de download para a URL:
-	download_photo_btn.href = snap;
+	download_foto_btn.href = snap;
 
 	video.pause();
 });
 
-delete_photo_btn.addEventListener("click", function(e) {
+excluir_foto_btn.addEventListener("click", function(e) {
 
 	e.preventDefault();
 
@@ -87,12 +91,60 @@ delete_photo_btn.addEventListener("click", function(e) {
 	image.classList.remove("visible");
 
 	// Desabilitar os botões: excluir e salvar:
-	delete_photo_btn.classList.add("disabled");
-	download_photo_btn.classList.add("disabled");
+	excluir_foto_btn.classList.add("disabled");
+	download_foto_btn.classList.add("disabled");
 
 	video.play();
 });
 
+function mostrarVideo() {
 
+	// Mostrar o stream de video e os controles:
+	hiddenUI();
+	video.classList.add("visible");
+	controles.classList.add("visible");
+}
+
+function tirarFoto() {
+
+	// Aqui estamos usando um truque que envolve um elemento de tela oculta.
+	var esconder_canvas = document.querySelector('canvas'),
+		context = esconder_canvas.getContext('2d');
+
+	var width = video.videoWidth,
+		height = video.videoHeight;
+
+	if(width && height) {
+
+		// Configura uma tela com as mesmas dimensões do vídeo.
+		esconder_canvas.width = width;
+        esconder_canvas.height = height;
+
+    	context.drawImage(video, 0, 0, width, height);
+
+    	return esconder_canvas.toDataURL('image/png');
+	}
+}
+
+function displayErrorMessage(error_msg, error){
+  error = error || "";
+  if(error){
+    console.log(error);
+  }
+
+  messagem_error.innerText = error_msg;
+
+  hideUI();
+  messagem_error.classList.add("visible");
+}
+
+// Função responsável por limpar a app.
+function hideUI() {
+  controles.classList.remove("visible");
+  iniciar_camera.classList.remove("visible");
+  video.classList.remove("visible");
+  snap.classList.remove("visible");
+  messagem_error.classList.remove("visible");
+}
 
 
