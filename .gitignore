@@ -67,6 +67,7 @@ config/local.js
 ################################################
 
 node_modules
+bower_components
 
 ################################################
 # Sails.js / Waterline / Grunt
