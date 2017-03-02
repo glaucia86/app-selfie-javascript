@@ -1,5 +1,3 @@
-"use strict";
-
 // Referências a todo o elemento que precisaremos.
 
 var video           	= document.querySelector('#camera-stream'),
@@ -100,7 +98,7 @@ excluir_foto_btn.addEventListener("click", function(e) {
 function mostrarVideo() {
 
 	// Mostrar o stream de video e os controles:
-	hiddenUI();
+	hideUI();
 	video.classList.add("visible");
 	controles.classList.add("visible");
 }
